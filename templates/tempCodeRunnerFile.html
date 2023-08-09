@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text-to-Speech Converter</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+    module.exports = {
+        theme: {
+          screens: {
+            'sm': '373px',
+            // => @media (min-width: 576px) { ... }
+      
+            'md': '960px',
+            // => @media (min-width: 960px) { ... }
+      
+            'lg': '1440px',
+            // => @media (min-width: 1440px) { ... }
+          },
+        }
+      }
+    </script>
+</head>
+<body class="p-8 min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('/text_to_speech_app/static/img/robot-handshake-human-background-futuristic-digital-age.jpg');">
+    <div class="whole">
+
+       
+   
+      
+        <h1 class=" text-3xl font-bold mb-8 text-yellow-50">Text-to-Speech Converter</h1>
+        
+    <form id="convert-form" class="mb-8">
+        <textarea name="text" class="w-full h-24 p-2 rounded border border-gray-400 focus:outline-none focus:border-blue-500" placeholder="Enter text to convert to speech..."></textarea>
+        <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Play</button>
+    </form>
+    <script>
+        const form = document.getElementById("convert-form");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const text = formData.get("text");
+
+            if (text.trim() === "") {
+                alert("Please enter text to convert.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/convert", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: new URLSearchParams(formData),
+                });
+
+                if (response.ok) {
+                    alert("Speech played successfully");
+                } else {
+                    alert("Error playing speech");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error occurred");
+            }
+        });
+    </script>
+    </div>
+</body>
+</html>
